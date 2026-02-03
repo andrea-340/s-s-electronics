@@ -5,6 +5,7 @@ import Header from "./components/header";
 import Chat from "./components/Chat";
 import AdminPanel from "./AdminPanel";
 import "./App.css";
+import silvioAvatar from "./assets/silvio-elettricista.png";
 
 const ClientLayout = ({ activeSection, setActiveSection }) => {
   useEffect(() => {
@@ -37,11 +38,11 @@ const ClientLayout = ({ activeSection, setActiveSection }) => {
                 <div className="glass-card presentation-card">
                   <div className="avatar-container">
                     <div className="silvio-avatar-frame">
-                      <img
-                        src="../src/assets/silvio-elettricista.png"
-                        alt="Silvio S&S"
-                      />
-                    </div>
+  <img
+    src={silvioAvatar} // Usa la variabile importata
+    alt="Silvio S&S"
+  />
+</div>
                     <div className="welcome-bubble-glass">
                       <p>
                         Benvenuto! Sono Silvio. Da 35 anni al vostro servizio.

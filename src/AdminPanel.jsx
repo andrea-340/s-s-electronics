@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "./lib/supabaseClient";
 import "./Admin.css";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ClientLayout from './ClientLayout'; // Il tuo componente con i servizi e Silvio
+import AdminPanel from './AdminPanel';
 
 export default function AdminPanel() {
   const [chats, setChats] = useState([]);
@@ -9,7 +12,20 @@ export default function AdminPanel() {
   const [reply, setReply] = useState("");
   const [uploading, setUploading] = useState(false);
   const scrollRef = useRef();
-
+  
+function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Rotta principale del sito */}
+        <Route path="/" element={<ClientLayout />} />
+        
+        {/* Rotta specifica per l'admin */}
+        <Route path="/admin" element={<AdminPanel />} />
+      </Routes>
+    </Router>
+  );
+}
   useEffect(() => {
     fetchChats();
     const sub = supabase
@@ -244,3 +260,5 @@ export default function AdminPanel() {
     </div>
   );
 }
+
+export default App;

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 
-// Sostituisci questi percorsi con quelli reali dove hai spostato le foto
-import img1 from "./assets/2025-01-2722.jpg";
-import img2 from "./assets/2025-01-272.jpg";
-import img3 from "./assets/2025-01-27.jpg";
-import img4 from "./assets/2025-01-272243.jpg";
-import img5 from "./assets/unnamed.jpg";
-import img6 from "./assets/unnamed2.jpg";
-
-const slides = [img1, img2, img3, img4, img5, img6];
+// NON usare import qui, usiamo i percorsi diretti dalla root
+const slides = [
+  "/2025-01-2722.jpg",
+  "/2025-01-272.jpg",
+  "/2025-01-27.jpg",
+  "/2025-01-272243.jpg",
+  "/unnamed.jpg",
+  "/unnamed2.jpg",
+];
 
 export default function Slider() {
   const [current, setCurrent] = useState(0);
@@ -21,12 +21,12 @@ export default function Slider() {
   }, []);
 
   return (
-    <div style={{ width: "100%", height: "500px", position: "relative", border: "5px solid red" }}>
+    <div style={{ width: "100%", height: "500px", position: "relative", overflow: "hidden" }}>
       {slides.map((url, i) => (
         <img
           key={i}
           src={url}
-          alt={`Slide ${i}`}
+          alt="slide"
           style={{
             position: "absolute",
             top: 0,
@@ -34,8 +34,11 @@ export default function Slider() {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            display: current === i ? "block" : "none", // Mostra solo quella attiva
+            opacity: current === i ? 1 : 0,
+            transition: "opacity 1s ease-in-out"
           }}
+          // Se l'immagine fallisce il caricamento, lo vedrai in console
+          onError={(e) => console.error(`Errore caricamento: ${url}`)} 
         />
       ))}
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-// Importa le immagini singolarmente (assicurati che il percorso sia corretto)
+// Sostituisci questi percorsi con quelli reali dove hai spostato le foto
 import img1 from "./assets/2025-01-2722.jpg";
 import img2 from "./assets/2025-01-272.jpg";
 import img3 from "./assets/2025-01-27.jpg";
@@ -8,7 +8,6 @@ import img4 from "./assets/2025-01-272243.jpg";
 import img5 from "./assets/unnamed.jpg";
 import img6 from "./assets/unnamed2.jpg";
 
-// Ora l'array contiene i riferimenti importati, non più stringhe fisse
 const slides = [img1, img2, img3, img4, img5, img6];
 
 export default function Slider() {
@@ -22,12 +21,21 @@ export default function Slider() {
   }, []);
 
   return (
-    <div className="slider-container">
+    <div style={{ width: "100%", height: "500px", position: "relative", border: "5px solid red" }}>
       {slides.map((url, i) => (
-        <div
+        <img
           key={i}
-          className={`slide-img ${current === i ? "active" : ""}`}
-          style={{ backgroundImage: `url(${url})` }}
+          src={url}
+          alt={`Slide ${i}`}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: current === i ? "block" : "none", // Mostra solo quella attiva
+          }}
         />
       ))}
     </div>

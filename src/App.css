@@ -559,3 +559,44 @@ body {
   filter: brightness(0.6) grayscale(0);
   scale: 1.1;
 }
+/* Stile base per il tasto hamburger (nascosto su desktop) */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* --- LOGICA MOBILE (sotto i 768px) --- */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block; /* Appare su smartphone */
+  }
+
+  .nav-links {
+    display: none; /* Nascondiamo i link normali */
+    flex-direction: column;
+    position: absolute;
+    top: 100%; /* Appare sotto la navbar */
+    left: 0;
+    width: 100%;
+    background-color: #222; /* Colore di sfondo della tendina */
+    padding: 1rem 0;
+    z-index: 1000;
+  }
+
+  /* Quando il menu ha la classe .open, lo mostriamo */
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links button {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+  }
+}

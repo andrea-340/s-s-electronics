@@ -12,8 +12,7 @@ const serviziData = [
   { id: 5, icon: <Zap />, title: 'Impianti Elettrici', desc: 'Realizzazione e manutenzione di impianti elettrici civili e industriali a norma di legge.' },
   { id: 6, icon: <Zap />, title: 'Fotovoltaico', desc: 'Installazione e manutenzione pannelli fotovoltaici per il risparmio energetico della tua casa.' },
   { id: 7, icon: <Settings />, title: 'Domotica Smart', desc: 'Rendi intelligente la tua casa con soluzioni Sonoff e Shelly: controllo luci, tapparelle e clima via App.' }
-];
-];
+]; // <-- Ora c'è solo una chiusura corretta
 
 export const Servizi = () => {
   const [selected, setSelected] = useState(serviziData[0]);

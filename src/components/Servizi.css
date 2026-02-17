@@ -386,3 +386,34 @@
     height: 16px;
   }
 }
+/* La griglia delle icone a sinistra */
+.cyber-icons-grid {
+  display: grid;
+  /* Crea una griglia flessibile: le icone si adattano al numero */
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); 
+  gap: 15px;
+  width: 100%;
+}
+
+/* Il singolo box dell'icona */
+.cyber-icon-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 10px;
+  background: rgba(0, 229, 255, 0.05);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+/* Testo sotto l'icona */
+.cyber-icon-box span {
+  font-size: 0.75rem; /* Rimpiccioliamo leggermente il testo per far stare tutto */
+  margin-top: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}

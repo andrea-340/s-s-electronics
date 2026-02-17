@@ -9,7 +9,10 @@ const serviziData = [
   { id: 2, icon: <Shield />, title: 'Sistemi Allarme', desc: 'Centraline anti-intrusione di ultima generazione, sensori perimetrali e protezione totale via App.' },
   { id: 3, icon: <Phone />, title: 'Citofonia & Video', desc: 'Montaggio e riparazione di citofoni e videocitofoni smart connessi.' },
   { id: 4, icon: <Settings />, title: 'Automazioni cancelli', desc: 'Installazione motori per cancelli a battente e scorrevoli. Automazione serrande.' },
-  { id: 5, icon: <Zap />, title: 'Impianti & Domotica', desc: 'Impianti elettrici a norma e soluzioni domotiche Sonoff.' }
+  { id: 5, icon: <Zap />, title: 'Impianti Elettrici', desc: 'Realizzazione e manutenzione di impianti elettrici civili e industriali a norma di legge.' },
+  { id: 6, icon: <Zap />, title: 'Fotovoltaico', desc: 'Installazione e manutenzione pannelli fotovoltaici per il risparmio energetico della tua casa.' },
+  { id: 7, icon: <Settings />, title: 'Domotica Smart', desc: 'Rendi intelligente la tua casa con soluzioni Sonoff e Shelly: controllo luci, tapparelle e clima via App.' }
+];
 ];
 
 export const Servizi = () => {

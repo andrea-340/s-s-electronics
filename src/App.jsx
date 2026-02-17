@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/header";
-import { TicketForm } from "./components/TikcketForm";
+import { TicketForm } from "./components/TicketForm";
 import { Servizi } from "./components/Servizi";
 import AdminPanel from "./AdminPanel";
 import "./App.css";

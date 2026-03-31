@@ -1,0 +1,187 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { supabase } from '../lib/supabaseClient';
+import { Camera, Shield, Phone, Settings, Zap, ChevronRight, ChevronLeft, Send, Loader2, CheckCircle, BadgeCheck, ClipboardCheck, PhoneCall } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import './Servizi.css';
+
+const serviziData = [
+  { id: 1, icon: <Camera />, title: 'Videosorveglianza', desc: 'Installazione telecamere IP ad alta risoluzione. Monitoraggio h24 direttamente su smartphone e tablet.' },
+  { id: 2, icon: <Shield />, title: 'Sistemi Allarme', desc: 'Centraline anti-intrusione di ultima generazione, sensori perimetrali e protezione totale via App.' },
+  { id: 3, icon: <Phone />, title: 'Citofonia & Video', desc: 'Montaggio e riparazione di citofoni e videocitofoni smart connessi.' },
+  { id: 4, icon: <Settings />, title: 'Automazioni cancelli', desc: 'Installazione motori per cancelli a battente e scorrevoli. Automazione serrande.' },
+  { id: 5, icon: <Zap />, title: 'Impianti Elettrici', desc: 'Realizzazione e manutenzione di impianti elettrici civili e industriali a norma di legge.' },
+  { id: 6, icon: <Zap />, title: 'Fotovoltaico', desc: 'Installazione e manutenzione pannelli fotovoltaici per il risparmio energetico della tua casa.' },
+  { id: 7, icon: <Settings />, title: 'Domotica Smart', desc: 'Rendi intelligente la tua casa con soluzioni Sonoff e Shelly: controllo luci, tapparelle e clima via App.' }
+];
+
+export const Servizi = () => {
+  const [selected, setSelected] = useState(serviziData[0]);
+  const [currentImgNum, setCurrentImgNum] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  
+  // Riferimento per il modulo
+  const formRef = useRef(null);
+
+  const [formData, setFormData] = useState({
+    user_name: '', user_email: '', user_phone: '', message: ''
+  });
+
+  useEffect(() => {
+    emailjs.init("LpQANhD_Awvn_gFdD");
+  }, []);
+
+  // Funzione per scorrere al modulo
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!privacyAccepted) return;
+    setLoading(true);
+    try {
+      const { error: supabaseError } = await supabase
+        .from('preventivi')
+        .insert([{ 
+            servizio: selected.title,
+            nome_cliente: formData.user_name,
+            email_cliente: formData.user_email, 
+            telefono_cliente: formData.user_phone,
+            messaggio: formData.message
+        }]);
+
+      if (supabaseError) throw supabaseError;
+
+      const templateParams = {
+        servizio: selected.title,
+        user_name: formData.user_name,
+        user_email: formData.user_email,
+        user_phone: formData.user_phone,
+        message: formData.message,
+        reply_to: formData.user_email
+      };
+
+      await emailjs.send('service_kio59pe', 'template_0tslim7', templateParams, 'LpQANhD_Awvn_gFdD');
+
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setPrivacyAccepted(false);
+        setFormData({ user_name: '', user_email: '', user_phone: '', message: '' });
+      }, 3000);
+
+    } catch (error) {
+      alert("Errore Processo: " + (error.text || "Errore nel database"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="cyber-container fade">
+      <div className="services-hero">
+        <div>
+          <span className="services-eyebrow">Servizi professionali</span>
+          <h2 className="cyber-main-title">Soluzioni tecniche per casa, attività e impianti</h2>
+          <p className="services-intro">
+            Seleziona l'area che ti interessa per vedere il tipo di intervento, una panoramica fotografica e richiedere un preventivo mirato.
+          </p>
+        </div>
+        <div className="services-process">
+          <div className="process-step">
+            <BadgeCheck size={18} />
+            <span>Consulenza tecnica</span>
+          </div>
+          <div className="process-step">
+            <ClipboardCheck size={18} />
+            <span>Preventivo chiaro</span>
+          </div>
+          <div className="process-step">
+            <PhoneCall size={18} />
+            <span>Supporto diretto</span>
+          </div>
+        </div>
+      </div>
+      
+      <div className="cyber-grid-layout main-services-layout">
+        <div className="cyber-icons-grid">
+          {serviziData.map((s) => (
+            <button key={s.id} type="button" className={`cyber-icon-box ${selected.id === s.id ? 'active' : ''}`} onClick={() => setSelected(s)}>
+              <div className="cube-wrapper"><div className="cube-icon">{s.icon}</div></div>
+              <span>{s.title}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="cyber-info-panel">
+          <div className="panel-header">Servizio selezionato</div>
+          <div className="panel-content">
+            <h3>{selected.title}</h3>
+            <div className="status-line"></div>
+            <p>{selected.desc}</p>
+            <div className="service-feature-list">
+              <div>Analisi esigenze e contesto di installazione</div>
+              <div>Componenti affidabili e configurazione accurata</div>
+              <div>Supporto post-intervento e indicazioni operative</div>
+            </div>
+            <button className="panel-btn" onClick={scrollToForm}>
+              RICHIEDI PREVENTIVO <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+
+        <div className="cyber-photo-carousel">
+          <div className="carousel-frame">
+            <img src={`/${currentImgNum}.${currentImgNum === 1 ? 'png' : 'jpg'}`} alt="Lavoro" className="carousel-img" />
+            <div className="carousel-tag">Lavori eseguiti</div>
+            <div className="image-counter">{String(currentImgNum).padStart(2, '0')} / 11</div>
+            <div className="carousel-controls">
+              <button onClick={() => setCurrentImgNum(p => p <= 1 ? 11 : p - 1)} className="ctrl-btn"><ChevronLeft/></button>
+              <button onClick={() => setCurrentImgNum(p => p >= 11 ? 1 : p + 1)} className="ctrl-btn"><ChevronRight/></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr className="cyber-divider" />
+
+      <div className="preventivo-section-flat" ref={formRef}>
+        {!submitted ? (
+          <div className="glass-card preventivo-form-card">
+            <h3 className="preventivo-title">Richiedi un preventivo professionale</h3>
+            <p className="preventivo-subtitle">Servizio selezionato: <strong>{selected.title}</strong></p>
+            
+            <form onSubmit={handleSubmit} className="preventivo-form">
+              <div className="input-row">
+                <div className="input-group"><input type="text" placeholder="Nome" required value={formData.user_name} onChange={(e) => setFormData({...formData, user_name: e.target.value})} /></div>
+                <div className="input-group"><input type="email" placeholder="Email" required value={formData.user_email} onChange={(e) => setFormData({...formData, user_email: e.target.value})} /></div>
+              </div>
+              <div className="input-group"><input type="tel" placeholder="Telefono" required value={formData.user_phone} onChange={(e) => setFormData({...formData, user_phone: e.target.value})} /></div>
+              <div className="input-group"><textarea placeholder="Dettagli richiesta..." rows="4" required value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})}></textarea></div>
+
+              <div className="privacy-consent-wrapper">
+                <label className="cyber-checkbox-label">
+                  <input type="checkbox" required checked={privacyAccepted} onChange={(e) => setPrivacyAccepted(e.target.checked)} />
+                  <span className="cyber-custom-checkbox"></span>
+                  <span className="privacy-text">Accetto il trattamento dei dati personali (GDPR)</span>
+                </label>
+              </div>
+
+              <button type="submit" className="send-form-btn big-btn" disabled={loading || !privacyAccepted}>
+                {loading ? <><Loader2 className="animate-spin" size={18} /> INVIO...</> : <><Send size={18} /> INVIA RICHIESTA ORA</>}
+              </button>
+            </form>
+          </div>
+        ) : (
+          <div className="success-message-flat glass-card">
+            <CheckCircle size={48} color="#7dd3fc" />
+            <h3>Richiesta ricevuta</h3>
+            <p>Grazie {formData.user_name}, ti contatterò entro 24 ore.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
